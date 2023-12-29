@@ -1,0 +1,9 @@
+export { default as AppartsPage } from "./apparts";
+export { default as ClientsPage } from "./clients";
+export { default as ErrorPage } from "./error";
+export { default as HomePage } from "./home";
+export { default as LoginPage } from "./login";
+export { default as SignupPage } from "./signup";
+export { default as PaiementPage } from "./paiement";
+export { default as ResetPswPAge } from "./resetPsw";
+export { default as SettingsPage } from "./settings";
