@@ -59,6 +59,7 @@ export type OccupantEntity = {
     nom: string;
     phone?: string;
     email?: string;
+    owner: string;
     created_at: Timestamp;
     updated_at: Timestamp;
     deleted_at: Timestamp;
@@ -84,6 +85,10 @@ export type DimensionContextType = {
 export type ModalData =
     | { modalId: "CREATE_APPART"; payload?: any }
     | { modalId: "ADD_OCCUPANT"; payload?: any }
+    | { modalId: "EDIT_APPART"; payload: { appartId: string } }
+    | { modalId: "DELETE_APPART"; payload: { appartId: string } }
+    | { modalId: "DELETE_OCCUPANT"; payload: { occupantId: string } }
+    | { modalId: "DELETE_PAYMENT"; payload: { paymentId: string } }
     | {
           modalId: "NEW_RENT";
           payload: { appartId?: string; occupantId?: string };

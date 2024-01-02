@@ -20,7 +20,7 @@ import useAuth from "@/hooks/useAuth";
 const OccupantContext = createContext<OccupantContextType>({});
 
 const OccupantContextProvider = ({ children }: { children: ReactNode }) => {
-    const { status } = useAuth();
+    const { status, auth } = useAuth();
     const { db } = useFirebaseContext();
     const [filter, setFilter] = useState({});
     const [occupants, setOccupant] = useState<
@@ -49,13 +49,17 @@ const OccupantContextProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         if (status != "CONNECTED") return;
-        const q = query(occupantCollection, where("deleted_at", "==", null));
+        const q = query(
+            occupantCollection,
+            where("deleted_at", "==", null),
+            where("owner", "==", auth.currentUser.uid),
+        );
         const unsubscribe = onSnapshot(q, (querySnap) => {
             setOccupant(querySnap.docs);
         });
 
         return () => unsubscribe();
-    }, [status, occupantCollection]);
+    }, [status, occupantCollection, auth]);
 
     return (
         <OccupantContext.Provider

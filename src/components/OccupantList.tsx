@@ -4,6 +4,7 @@ import { CustomTable } from "./CustomTable";
 import { OccupantEntity } from "@/types";
 import { useAppartContext } from "@/contexts/appart.context";
 import { Tag } from "antd";
+import { useModalContext } from "@/contexts/modal.context";
 
 const OccupantList = ({
     occupants,
@@ -11,6 +12,7 @@ const OccupantList = ({
     occupants: QueryDocumentSnapshot<OccupantEntity>[];
 }) => {
     const { apparts } = useAppartContext();
+    const { openModal } = useModalContext();
 
     return (
         <AntConfig>
@@ -40,7 +42,22 @@ const OccupantList = ({
                                 "-"
                             ),
                     },
-                    { title: "Action" },
+                    {
+                        title: "Actions",
+                        render: (_, record) => (
+                            <button
+                                onClick={() =>
+                                    openModal({
+                                        modalId: "DELETE_OCCUPANT",
+                                        payload: { occupantId: record.id },
+                                    })
+                                }
+                                className="block px-4 py-1 border rounded-md hover:border-red-700 hover:bg-red-700 duration-500"
+                            >
+                                Supprimer
+                            </button>
+                        ),
+                    },
                 ]}
                 dataSource={occupants}
             />

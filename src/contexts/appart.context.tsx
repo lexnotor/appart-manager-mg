@@ -20,7 +20,7 @@ import { useFirebaseContext } from "./firebase.context";
 const AppartContext = createContext<AppartContextType>({});
 
 const AppartContextProvider = ({ children }: { children: ReactNode }) => {
-    const { status } = useAuth();
+    const { status, auth } = useAuth();
     const { db } = useFirebaseContext();
     const [apparts, setApparts] = useState<
         QueryDocumentSnapshot<AppartEntity, AppartEntity>[]
@@ -49,13 +49,17 @@ const AppartContextProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         if (status != "CONNECTED") return;
 
-        const q = query(appartCollection, where("deleted_at", "==", null));
+        const q = query(
+            appartCollection,
+            where("deleted_at", "==", null),
+            where("owner.id", "==", auth.currentUser.uid),
+        );
         const unsubscribe = onSnapshot(q, (querySnap) => {
             setApparts(querySnap.docs);
         });
 
         return () => unsubscribe();
-    }, [filter, status, db, converter, appartCollection]);
+    }, [filter, status, db, converter, appartCollection, auth]);
 
     return (
         <AppartContext.Provider

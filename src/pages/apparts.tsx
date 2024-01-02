@@ -5,17 +5,18 @@ import { useAppartContext } from "@/contexts/appart.context";
 import { useDimensionContext } from "@/contexts/dimension.context";
 import { useModalContext } from "@/contexts/modal.context";
 import { Drawer } from "antd";
+import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const AppartsPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { apparts } = useAppartContext();
 
-    const closeDetails = () => {
+    const closeDetails = useCallback(() => {
         const query = new URLSearchParams(searchParams);
         query.delete("appart");
         setSearchParams(query);
-    };
+    }, [searchParams, setSearchParams]);
 
     const { screenX } = useDimensionContext();
     const { openModal } = useModalContext();

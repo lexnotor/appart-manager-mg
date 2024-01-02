@@ -1,6 +1,7 @@
 import { useAppartContext } from "@/contexts/appart.context";
 import { useFirebaseContext } from "@/contexts/firebase.context";
 import { useOccupantContext } from "@/contexts/occupant.context";
+import useAuth from "@/hooks/useAuth";
 import { AppartEntity } from "@/types";
 import { Modal } from "antd";
 import {
@@ -25,6 +26,7 @@ const NewRent = ({
     const { occupants, occupantCollection } = useOccupantContext();
     const { apparts } = useAppartContext();
     const { db } = useFirebaseContext();
+    const { auth } = useAuth();
 
     const occupant = occupants.find((item) => item.id == payload?.occupantId);
     const appart = apparts.find((item) => item.id == payload?.appartId);
@@ -45,6 +47,7 @@ const NewRent = ({
                   created_at: Timestamp.now(),
                   updated_at: Timestamp.now(),
                   deleted_at: null,
+                  owner: auth.currentUser.uid,
               })
             : doc(db, "occupants/" + occupantSelRef.current.value);
 
@@ -135,20 +138,14 @@ const NewRent = ({
                                 e.target.value == "new" ? setIsNew(true) : null
                             }
                             ref={occupantSelRef}
+                            defaultValue={occupant?.id ?? "none"}
                         >
                             <option value={"none"}>Choisir Occupant ...</option>
                             <option value={"new"} selected={false}>
                                 Nouvel occupant
                             </option>
                             {occupants.map((item) => (
-                                <option
-                                    value={item?.id}
-                                    selected={
-                                        occupant?.id == item.id
-                                            ? true
-                                            : undefined
-                                    }
-                                >
+                                <option key={item.id} value={item?.id}>
                                     {item.data().nom}
                                 </option>
                             ))}

@@ -20,7 +20,7 @@ import { PaymentContextType, PaymentEntity } from "@/types";
 const PaymentContext = createContext<PaymentContextType>({});
 
 const PaymentContextProvider = ({ children }: { children: ReactNode }) => {
-    const { status } = useAuth();
+    const { status, auth } = useAuth();
     const { db } = useFirebaseContext();
     const [filter, setFilter] = useState({});
     const [payments, setPayments] = useState<
@@ -48,14 +48,18 @@ const PaymentContextProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         if (status != "CONNECTED") return;
-        const q = query(paymentCollection, where("deleted_at", "==", null));
+        const q = query(
+            paymentCollection,
+            where("deleted_at", "==", null),
+            where("appart.owner.id", "==", auth?.currentUser?.uid),
+        );
 
         const unsubscribe = onSnapshot(q, (querySnap) => {
             setPayments(querySnap.docs);
         });
 
         return () => unsubscribe();
-    }, [status, paymentCollection]);
+    }, [status, paymentCollection, auth]);
 
     return (
         <PaymentContext.Provider

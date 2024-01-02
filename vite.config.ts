@@ -5,4 +5,7 @@ import tsConfigPath from "vite-tsconfig-paths";
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react(), tsConfigPath()],
+    build: {
+        chunkSizeWarningLimit: 1_000,
+    },
 });

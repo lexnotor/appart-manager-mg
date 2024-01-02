@@ -18,12 +18,12 @@ const AppartCard = ({
         });
 
     return (
-        <article className="p-2 border border-neutral-700 rounded-md max-w-[30rem] flex gap-2">
+        <article className="p-2 border border-neutral-700 rounded-md max-w-[30rem] flex max-sm:flex-col gap-2">
             <img
                 onClick={showDetail}
                 src={living_room}
                 alt="photo_1"
-                className="w-1/2 shrink-0 aspect-square object-cover object-center rounded-md cursor-pointer"
+                className="w-full sm:w-1/2 shrink-0 aspect-square object-cover object-center rounded-md cursor-pointer"
             />
             <div className="grow flex flex-col justify-between gap-2">
                 <header>
@@ -33,7 +33,7 @@ const AppartCard = ({
                     >
                         {data.data()?.title}
                     </h3>
-                    <div className="flex flex-wrap gap-x-4 text-[85%]">
+                    <div className="flex flex-wrap gap-x-4 text-[85%] mt-1">
                         <div
                             className={`${
                                 data.data().occupant || data.data().occupant_ref
@@ -46,19 +46,27 @@ const AppartCard = ({
                             </span>
                             <span>Occupé</span>
                         </div>
-                        <div className="text-neutral-600 flex gap-1 items-center">
-                            <span className="text-lg">
-                                <LuBadgeCheck />
-                            </span>
-                            <span>Equipé</span>
-                        </div>
+                        {/* <Divider type="vertical" />
+                        <div className="duration-500 hover:dark:text-primary hover:text-primary-dark flex gap-1 items-center">
+                            <button
+                                onClick={() =>
+                                    openModal({
+                                        modalId: "EDIT_APPART",
+                                        payload: { appartId: data?.id },
+                                    })
+                                }
+                                className="text-lg cursor-pointer"
+                            >
+                                <FaEdit />
+                            </button>
+                        </div> */}
                     </div>
                 </header>
 
                 <section className="mb-auto text-[85%] text-justify">
-                    <p>
-                        {(data.data().description ?? "")?.slice(0, 150)}
-                        {(data.data().description ?? "").length > 150 && " ..."}
+                    <p className="">
+                        {(data.data().description ?? "")?.slice(0, 100)}
+                        {(data.data().description ?? "").length > 100 && " ..."}
                     </p>
                 </section>
 

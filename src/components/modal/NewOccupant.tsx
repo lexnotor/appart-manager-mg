@@ -1,4 +1,5 @@
 import { useOccupantContext } from "@/contexts/occupant.context";
+import useAuth from "@/hooks/useAuth";
 import { OccupantEntity } from "@/types";
 import { Modal } from "antd";
 import { Timestamp, addDoc } from "firebase/firestore";
@@ -6,6 +7,7 @@ import React, { useRef, useState } from "react";
 
 const NewOccupant = ({ closeModal }: { closeModal: () => any }) => {
     const { occupantCollection } = useOccupantContext();
+    const { auth } = useAuth();
 
     const [loading, setLoading] = useState(false);
 
@@ -17,11 +19,12 @@ const NewOccupant = ({ closeModal }: { closeModal: () => any }) => {
         e.preventDefault();
         const payload: OccupantEntity = {
             nom: nomRef.current.value,
-            email: phoneRef.current.value || null,
-            phone: emailRef.current.value || null,
+            email: emailRef.current.value || null,
+            phone: phoneRef.current.value || null,
             created_at: Timestamp.now(),
             updated_at: Timestamp.now(),
             deleted_at: null,
+            owner: auth.currentUser.uid,
         };
 
         setLoading(true);

@@ -37,6 +37,23 @@
         -moz-osx-font-smoothing: grayscale;
     }
 
+    .truncate-overflow {
+        --max-lines: 4;
+        --lh: 1.2rem;
+        line-height: var(--lh);
+        position: relative;
+        max-height: calc(var(--lh) * var(--max-lines));
+        overflow: hidden;
+        padding-right: 1rem;
+    }
+
+    .truncate-overflow::before {
+        position: absolute;
+        content: "...";
+        bottom: 0;
+        right: 0;
+    }
+
     @media (prefers-color-scheme: light) {
         :root {
             color: #213547;

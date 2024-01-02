@@ -7,6 +7,7 @@ import { useAppartContext } from "@/contexts/appart.context";
 import { useModalContext } from "@/contexts/modal.context";
 import { Timestamp, updateDoc } from "firebase/firestore";
 import { AppartEntity } from "@/types";
+import { useEffect } from "react";
 
 const AppartDetails = ({ close }: { close: () => any }) => {
     const { apparts } = useAppartContext();
@@ -15,6 +16,13 @@ const AppartDetails = ({ close }: { close: () => any }) => {
     const current = apparts?.find(
         (snap) => snap?.id == searchParams.get("appart"),
     );
+
+    useEffect(() => {
+        if (current && current.data()) return;
+
+        const timer = setTimeout(close, 3_000);
+        return () => clearTimeout(timer);
+    }, [close, current]);
 
     if (!current || !current?.data())
         return (
@@ -47,33 +55,74 @@ const AppartDetails = ({ close }: { close: () => any }) => {
                 />
                 <header className="flex gap-x-8">
                     <h3 className="font-bold text-2xl">{data?.title}</h3>
-                    <div className="flex flex-wrap gap-x-4 text-[85%]">
-                        <div
-                            className={`${
-                                data.occupant || data.occupant_ref
-                                    ? "text-primary font-bold text-[110%]"
-                                    : "text-neutral-600"
-                            } flex gap-1 items-center`}
-                        >
-                            <span className="text-lg">
-                                <LuBadgeCheck />
-                            </span>
-                            <span>Occupé</span>
-                        </div>
-                        <div className="text-neutral-600 flex gap-1 items-center">
-                            <span className="text-lg">
-                                <LuBadgeCheck />
-                            </span>
-                            <span>Occupé</span>
-                        </div>
-                    </div>
+
                     <div className="ml-auto font-bold text-yellow-400">
                         <span>{data?.price_unit} </span>
                         <span className="text-3xl">{data?.price}</span>
                         <span>/mois </span>
                     </div>
                 </header>
+                <div className="flex flex-wrap gap-x-4 text-[85%]">
+                    <div
+                        className={`${
+                            data.occupant || data.occupant_ref
+                                ? "text-primary font-bold text-[110%]"
+                                : "text-neutral-600"
+                        } flex gap-1 items-center`}
+                    >
+                        <span className="text-lg">
+                            <LuBadgeCheck />
+                        </span>
+                        <span>Occupé</span>
+                    </div>
+                    <div className="duration-500 hover:dark:text-primary hover:text-primary-dark flex gap-1 items-center">
+                        <button
+                            onClick={() =>
+                                openModal({
+                                    modalId: "EDIT_APPART",
+                                    payload: { appartId: current.id },
+                                })
+                            }
+                            className="flex gap-2 text-sm  px-4 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"
+                        >
+                            <span>Modifier</span>
+                        </button>
+                    </div>
 
+                    {data.occupant ? (
+                        <button
+                            onClick={freeAppart}
+                            className="block px-4 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"
+                        >
+                            Fin location
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() =>
+                                openModal({
+                                    modalId: "NEW_RENT",
+                                    payload: { appartId: current?.id },
+                                })
+                            }
+                            className="block px-4 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"
+                        >
+                            Louer
+                        </button>
+                    )}
+                    {data.occupant ? (
+                        <button
+                            onClick={() =>
+                                openModal({
+                                    modalId: "SAVE_PAYMENT",
+                                    payload: { appartId: current?.id },
+                                })
+                            }
+                            className="block px-4 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"
+                        >
+                            Nouveau paiement
+                        </button>
+                    ) : null}
+                </div>
                 <p>{data?.description}</p>
 
                 <Divider orientation="left" orientationMargin={0}>
@@ -127,39 +176,17 @@ const AppartDetails = ({ close }: { close: () => any }) => {
             <Divider className="py-0 mt-0 mb-2" />
 
             <footer className="flex gap-4 justify-end">
-                {data.occupant ? (
-                    <button
-                        onClick={() =>
-                            openModal({
-                                modalId: "SAVE_PAYMENT",
-                                payload: { appartId: current?.id },
-                            })
-                        }
-                        className="block px-4 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"
-                    >
-                        Nouveau paiement
-                    </button>
-                ) : null}
-                {data.occupant ? (
-                    <button
-                        onClick={freeAppart}
-                        className="block px-4 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"
-                    >
-                        Fin location
-                    </button>
-                ) : (
-                    <button
-                        onClick={() =>
-                            openModal({
-                                modalId: "NEW_RENT",
-                                payload: { appartId: current?.id },
-                            })
-                        }
-                        className="block px-4 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"
-                    >
-                        Louer
-                    </button>
-                )}
+                <button
+                    onClick={() =>
+                        openModal({
+                            modalId: "DELETE_APPART",
+                            payload: { appartId: current.id },
+                        })
+                    }
+                    className="block px-4 py-1 border rounded-md hover:border-red-700 hover:bg-red-700 duration-500"
+                >
+                    <span>Supprimer</span>
+                </button>
                 <button
                     onClick={close}
                     className="block px-4 py-1 border rounded-md hover:border-red-700 hover:bg-red-700 duration-500"

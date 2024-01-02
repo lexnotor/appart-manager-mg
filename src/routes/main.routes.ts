@@ -1,16 +1,6 @@
 import AuthLayout from "@/components/AuthLayout";
 import RootLayout from "@/components/RootLayout";
-import {
-    AppartsPage,
-    OccupantsPage,
-    ErrorPage,
-    HomePage,
-    LoginPage,
-    PaiementPage,
-    ResetPswPAge,
-    SettingsPage,
-    SignupPage,
-} from "@/pages";
+import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 const mainRoutes = createBrowserRouter([
@@ -20,42 +10,43 @@ const mainRoutes = createBrowserRouter([
         children: [
             {
                 index: true,
-                Component: HomePage,
+                Component: React.lazy(() => import("@/pages/home")),
             },
             {
                 path: "apparts",
-                Component: AppartsPage,
+                Component: React.lazy(() => import("@/pages/apparts")),
             },
             {
                 path: "payment",
-                Component: PaiementPage,
+                Component: React.lazy(() => import("@/pages/paiement")),
             },
             {
                 path: "occupants",
-                Component: OccupantsPage,
+                Component: React.lazy(() => import("@/pages/occupants")),
             },
             {
                 path: "reset",
-                Component: ResetPswPAge,
+                Component: React.lazy(() => import("@/pages/resetPsw")),
             },
             {
                 path: "settings",
-                Component: SettingsPage,
+                Component: React.lazy(() => import("@/pages/settings")),
             },
         ],
-        ErrorBoundary: ErrorPage,
+        ErrorBoundary: React.lazy(() => import("@/pages/error")),
     },
     {
         path: "/",
         Component: AuthLayout,
+        ErrorBoundary: React.lazy(() => import("@/pages/error")),
         children: [
             {
                 path: "/login",
-                Component: LoginPage,
+                Component: React.lazy(() => import("@/pages/login")),
             },
             {
                 path: "/signup",
-                Component: SignupPage,
+                Component: React.lazy(() => import("@/pages/signup")),
             },
         ],
     },

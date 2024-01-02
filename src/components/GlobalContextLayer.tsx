@@ -4,7 +4,7 @@ import { FirebaseContextProvider } from "@/contexts/firebase.context";
 import { ModalContextProvider } from "@/contexts/modal.context";
 import { OccupantContextProvider } from "@/contexts/occupant.context";
 import { PaymentContextProvider } from "@/contexts/payment.context";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 const GlobalContextLayer = ({ children }: { children: ReactNode }) => {
     return (
