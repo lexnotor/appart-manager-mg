@@ -1,7 +1,9 @@
 import LoginForm from "@/components/LoginForm";
+import useAuth from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
+    const { status } = useAuth();
     return (
         <div className="flex flex-col gap-4">
             <header className="text-center">
@@ -14,7 +16,13 @@ const LoginPage = () => {
             <div className="py-4" />
 
             <section>
-                <LoginForm />
+                {status == "DISCONNECTED" ? (
+                    <LoginForm />
+                ) : (
+                    <div className="flex justify-center items-center w-full h-[20rem]">
+                        <div className="w-8 h-8 border-2 border-transparent border-t-primary rounded-full animate-spin" />
+                    </div>
+                )}
             </section>
 
             <footer className="text-center">

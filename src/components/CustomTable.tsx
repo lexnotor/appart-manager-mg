@@ -16,7 +16,7 @@ export function CustomTable<T extends AnyObject>({ ...arg }: Cust<T>) {
                     </div>
                 ),
             }}
-            pagination={{ hideOnSinglePage: true }}
+            pagination={{ hideOnSinglePage: true, pageSize: 20 }}
             scroll={{ x: "max-width" }}
             {...arg}
             components={{
@@ -24,7 +24,7 @@ export function CustomTable<T extends AnyObject>({ ...arg }: Cust<T>) {
                     cell: ({ children, ...rest }: { children: any }) => (
                         <td
                             {...rest}
-                            className="p-2 hover:!bg-transparent !font-medium !text-black text-sm !bg-white"
+                            className="p-2 hover:!bg-transparent !font-medium text-sm"
                         >
                             {children}
                         </td>
@@ -42,7 +42,7 @@ export function CustomTable<T extends AnyObject>({ ...arg }: Cust<T>) {
                     cell: ({ children, ...rest }: { children: any }) => (
                         <td
                             {...rest}
-                            className="p-0 !font-normal !text-black text-sm !border-none"
+                            className="p-0 !font-normal text-sm !border-none"
                         >
                             {children}
                         </td>

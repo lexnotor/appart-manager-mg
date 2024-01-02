@@ -6,7 +6,7 @@ const Navbar = () => {
 
     return (
         <div className="flex justify-between gap-4">
-            <div>Logo</div>
+            <div>NdakuM</div>
 
             <nav>
                 <ul className="flex gap-4">
@@ -21,13 +21,15 @@ const Navbar = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to={{ pathname: "/clients" }}>Clients</NavLink>
+                        <NavLink to={{ pathname: "/occupants" }}>
+                            Occupants
+                        </NavLink>
                     </li>
-                    <li>
+                    {/* <li>
                         <NavLink to={{ pathname: "/settings" }}>
                             Paramétres
                         </NavLink>
-                    </li>
+                    </li> */}
                 </ul>
             </nav>
             <div>

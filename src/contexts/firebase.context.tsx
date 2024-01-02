@@ -1,3 +1,15 @@
+import { FirebaseContextType } from "@/types";
+import { FirebaseApp, initializeApp } from "firebase/app";
+import {
+    Auth,
+    createUserWithEmailAndPassword,
+    getAuth,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signOut,
+} from "firebase/auth";
+import { Firestore, doc, getFirestore, setDoc } from "firebase/firestore";
+import { FirebaseStorage, getStorage } from "firebase/storage";
 import {
     ReactNode,
     createContext,
@@ -6,17 +18,6 @@ import {
     useEffect,
     useState,
 } from "react";
-import { initializeApp, FirebaseApp } from "firebase/app";
-import {
-    getAuth,
-    Auth,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut,
-    createUserWithEmailAndPassword,
-} from "firebase/auth";
-import { getFirestore, Firestore } from "firebase/firestore";
-import { FirebaseContextType } from "@/types";
 
 const firebaseContext = createContext<FirebaseContextType>({});
 
@@ -33,6 +34,7 @@ const FirebaseContextProvider = ({ children }: { children: ReactNode }) => {
     const [firebase, setFirebase] = useState<FirebaseApp>(null);
     const [auth, setFireauth] = useState<Auth>(null);
     const [db, setFirestore] = useState<Firestore>(null);
+    const [storage, setStorage] = useState<FirebaseStorage>(null);
     const [status, setStatus] =
         useState<FirebaseContextType["status"]>("LOADING");
 
@@ -51,11 +53,17 @@ const FirebaseContextProvider = ({ children }: { children: ReactNode }) => {
         (email: string, psw: string) => {
             if (!auth) return;
             setStatus("LOADING");
-            createUserWithEmailAndPassword(auth, email, psw).catch(() => {
-                setStatus("DISCONNECTED");
-            });
+            createUserWithEmailAndPassword(auth, email, psw)
+                .then((cred) => {
+                    setDoc(doc(db, "users", cred?.user?.uid), {
+                        email: cred?.user?.email,
+                    });
+                })
+                .catch(() => {
+                    setStatus("DISCONNECTED");
+                });
         },
-        [auth],
+        [auth, db],
     );
 
     const logout = useCallback(() => {
@@ -70,8 +78,9 @@ const FirebaseContextProvider = ({ children }: { children: ReactNode }) => {
         setFirebase(app);
         setFireauth(app_auth);
         setFirestore(getFirestore(app));
+        setStorage(getStorage(app));
 
-        setStatus(app_auth?.currentUser ? "CONNECTED" : "DISCONNECTED");
+        // setStatus(app_auth?.currentUser ? "CONNECTED" : "DISCONNECTED");
 
         const unsubscribe = onAuthStateChanged(
             app_auth,
@@ -88,6 +97,7 @@ const FirebaseContextProvider = ({ children }: { children: ReactNode }) => {
                 firebase,
                 auth,
                 db,
+                storage,
                 status,
                 login,
                 logout,

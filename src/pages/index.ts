@@ -1,5 +1,5 @@
 export { default as AppartsPage } from "./apparts";
-export { default as ClientsPage } from "./clients";
+export { default as OccupantsPage } from "./occupants";
 export { default as ErrorPage } from "./error";
 export { default as HomePage } from "./home";
 export { default as LoginPage } from "./login";

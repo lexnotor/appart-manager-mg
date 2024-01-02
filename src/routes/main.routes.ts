@@ -2,7 +2,7 @@ import AuthLayout from "@/components/AuthLayout";
 import RootLayout from "@/components/RootLayout";
 import {
     AppartsPage,
-    ClientsPage,
+    OccupantsPage,
     ErrorPage,
     HomePage,
     LoginPage,
@@ -31,8 +31,8 @@ const mainRoutes = createBrowserRouter([
                 Component: PaiementPage,
             },
             {
-                path: "clients",
-                Component: ClientsPage,
+                path: "occupants",
+                Component: OccupantsPage,
             },
             {
                 path: "reset",

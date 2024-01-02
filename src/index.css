@@ -9,11 +9,13 @@
         font-family: 'Saira', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     }
 
-    input {
+    input,
+    textarea,
+    select {
         @apply outline-none py-2 px-4 duration-300 bg-transparent border border-neutral-700 rounded-md
     }
 
-    input:focus {
+    :focus:is(input, textarea, select) {
         @apply outline-none border-primary
     }
 
@@ -41,7 +43,7 @@
             background-color: #ffffff;
         }
 
-        input:focus {
+        :focus:is(input, textarea, select) {
             @apply border-primary-dark
         }
 

@@ -2,7 +2,7 @@ import Navbar from "./navbar/Navbar";
 
 const Header = () => {
     return (
-        <div>
+        <div className="p-5 shadow-lg">
             <Navbar />
         </div>
     );
