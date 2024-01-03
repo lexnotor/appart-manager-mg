@@ -6,6 +6,7 @@ import { useDimensionContext } from "@/contexts/dimension.context";
 import { useModalContext } from "@/contexts/modal.context";
 import { Drawer } from "antd";
 import { useCallback } from "react";
+import { IoMdAdd } from "react-icons/io";
 import { useSearchParams } from "react-router-dom";
 
 const AppartsPage = () => {
@@ -24,13 +25,18 @@ const AppartsPage = () => {
     return (
         <div className="p-4 flex flex-col gap-8">
             <header className="flex justify-between">
-                <h2 className="text-2xl font-bold">Mes Appartements</h2>
+                <h2 className="text-2xl font-bold">Appartements</h2>
                 <div>
                     <button
                         className="px-4 py-2 border rounded-md border-primary-dark bg-primary-dark hover:bg-transparent hover:border-primary hover:text-primary duration-500"
                         onClick={() => openModal({ modalId: "CREATE_APPART" })}
                     >
-                        Ajouter appartement
+                        <span className="max-sm:hidden">
+                            Ajouter appartement
+                        </span>
+                        <span className="sm:hidden text-2xl">
+                            <IoMdAdd />
+                        </span>
                     </button>
                 </div>
             </header>

@@ -20,6 +20,15 @@ const AntConfig = ({ children }: { children: ReactNode }) => {
                     },
                     Table: {
                         colorBgContainer: "transparent",
+                        zIndexBase: 40,
+                        zIndexPopupBase: 50,
+                    },
+                    Select: {
+                        colorBgContainer: "transparent",
+                        colorPrimary: "#2fdde0",
+                        colorPrimaryActive: "#2fdde0",
+                        colorPrimaryHover: "#404040",
+                        fontSizeLG: 14,
                     },
                 },
                 algorithm: isDark ? darkAlgorithm : defaultAlgorithm,

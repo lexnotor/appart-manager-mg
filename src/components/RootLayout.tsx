@@ -7,7 +7,7 @@ const RootLayout = () => {
     const { status } = useAuth();
     return (
         <main className="max-w-[85rem] mx-auto">
-            <header className="sticky top-0 backdrop-blur-xl">
+            <header className="sticky z-50 top-0 backdrop-blur-xl">
                 <Header />
             </header>
 

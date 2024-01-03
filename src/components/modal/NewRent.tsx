@@ -3,7 +3,8 @@ import { useFirebaseContext } from "@/contexts/firebase.context";
 import { useOccupantContext } from "@/contexts/occupant.context";
 import useAuth from "@/hooks/useAuth";
 import { AppartEntity } from "@/types";
-import { Modal } from "antd";
+import { Modal, Select } from "antd";
+
 import {
     Timestamp,
     addDoc,
@@ -31,7 +32,9 @@ const NewRent = ({
     const occupant = occupants.find((item) => item.id == payload?.occupantId);
     const appart = apparts.find((item) => item.id == payload?.appartId);
 
-    const occupantSelRef = useRef<HTMLSelectElement>(null);
+    const occupantSelRef = useRef<{ value: string }>({
+        value: occupant?.id ?? "none",
+    });
     const occupantInpRef = useRef<HTMLInputElement>(null);
 
     const submit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -132,24 +135,33 @@ const NewRent = ({
                             </div>
                         </>
                     ) : (
-                        <select
-                            className=""
-                            onChange={(e) =>
-                                e.target.value == "new" ? setIsNew(true) : null
+                        <Select
+                            showSearch
+                            placeholder="Choisir Occupant ..."
+                            onChange={(value) => {
+                                occupantSelRef.current.value = value;
+                                value == "new" ? setIsNew(true) : null;
+                            }}
+                            filterOption={(input, option) =>
+                                (option?.label ?? "")
+                                    .toLowerCase()
+                                    .includes(input.toLowerCase())
                             }
-                            ref={occupantSelRef}
                             defaultValue={occupant?.id ?? "none"}
-                        >
-                            <option value={"none"}>Choisir Occupant ...</option>
-                            <option value={"new"} selected={false}>
-                                Nouvel occupant
-                            </option>
-                            {occupants.map((item) => (
-                                <option key={item.id} value={item?.id}>
-                                    {item.data().nom}
-                                </option>
-                            ))}
-                        </select>
+                            options={[
+                                {
+                                    label: "Choisir Occupant ...",
+                                    value: "none",
+                                },
+                                { label: "Nouvel occupant", value: "new" },
+                                ...occupants.map((item) => ({
+                                    value: item.id,
+                                    label: item.data().nom,
+                                })),
+                            ]}
+                            size="large"
+                            className=""
+                        />
                     )}
                 </div>
 

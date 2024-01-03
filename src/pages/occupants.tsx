@@ -1,6 +1,7 @@
 import OccupantList from "@/components/OccupantList";
 import { useModalContext } from "@/contexts/modal.context";
 import { useOccupantContext } from "@/contexts/occupant.context";
+import { IoMdAdd } from "react-icons/io";
 
 const OccupantsPage = () => {
     const { occupants } = useOccupantContext();
@@ -15,7 +16,10 @@ const OccupantsPage = () => {
                         className="px-4 py-2 border rounded-md border-primary-dark bg-primary-dark hover:bg-transparent hover:border-primary hover:text-primary duration-500"
                         onClick={() => openModal({ modalId: "ADD_OCCUPANT" })}
                     >
-                        Nouvel occupant
+                        <span className="max-sm:hidden">Nouvel occupant</span>
+                        <span className="sm:hidden text-xl">
+                            <IoMdAdd />
+                        </span>
                     </button>
                 </div>
             </header>

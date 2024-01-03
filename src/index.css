@@ -11,11 +11,12 @@
 
     input,
     textarea,
-    select {
+    select,
+    .custom-input {
         @apply outline-none py-2 px-4 duration-300 bg-transparent border border-neutral-700 rounded-md
     }
 
-    :focus:is(input, textarea, select) {
+    :focus:is(input, textarea, select, .custom-input) {
         @apply outline-none border-primary
     }
 
@@ -60,7 +61,7 @@
             background-color: #ffffff;
         }
 
-        :focus:is(input, textarea, select) {
+        :focus:is(input, textarea, select, .custom-input) {
             @apply border-primary-dark
         }
 

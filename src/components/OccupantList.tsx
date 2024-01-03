@@ -20,15 +20,27 @@ const OccupantList = ({
                 columns={[
                     {
                         title: "Nom",
-                        render: (_, record) => record.data().nom ?? "-",
+                        render: (_, record) => (
+                            <span className="whitespace-nowrap">
+                                {record.data().nom ?? "-"}
+                            </span>
+                        ),
                     },
                     {
                         title: "Télèphone",
-                        render: (_, record) => record.data().phone ?? "-",
+                        render: (_, record) => (
+                            <span className="whitespace-nowrap">
+                                {record.data().phone ?? "-"}
+                            </span>
+                        ),
                     },
                     {
                         title: "Email",
-                        render: (_, record) => record.data().email ?? "-",
+                        render: (_, record) => (
+                            <span className="whitespace-nowrap">
+                                {record.data().email ?? "-"}
+                            </span>
+                        ),
                     },
                     {
                         title: "Status",

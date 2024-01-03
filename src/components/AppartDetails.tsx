@@ -62,13 +62,13 @@ const AppartDetails = ({ close }: { close: () => any }) => {
                         <span>/mois </span>
                     </div>
                 </header>
-                <div className="flex flex-wrap gap-x-4 text-[85%]">
+                <div className="flex flex-wrap gap-2 sm:gap-4 text-[85%]">
                     <div
                         className={`${
                             data.occupant || data.occupant_ref
                                 ? "text-primary font-bold text-[110%]"
                                 : "text-neutral-600"
-                        } flex gap-1 items-center`}
+                        } flex gap-1 items-center basis-full`}
                     >
                         <span className="text-lg">
                             <LuBadgeCheck />
