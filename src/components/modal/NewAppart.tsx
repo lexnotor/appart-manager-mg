@@ -1,21 +1,41 @@
+import { useAppartContext } from "@/contexts/appart.context";
+import { useEstateContext } from "@/contexts/estate.context";
 import { useFirebaseContext } from "@/contexts/firebase.context";
 import { AppartEntity } from "@/types";
-import { Modal } from "antd";
-import { Timestamp, addDoc, collection, doc } from "firebase/firestore";
+import { Modal, Select } from "antd";
+import { Timestamp, addDoc, doc } from "firebase/firestore";
 import React, { useRef, useState } from "react";
 
-const NewAppart = ({ closeModal }: { closeModal: () => any }) => {
+const NewAppart = ({
+    closeModal,
+    payload,
+}: {
+    closeModal: () => any;
+    payload: { estateId?: string };
+}) => {
     const { db, auth } = useFirebaseContext();
 
     const [loading, setLoading] = useState(false);
+    const { appartCollection } = useAppartContext();
+    const { estates } = useEstateContext();
+
+    const estate = estates.find((item) => item.id == payload?.estateId);
 
     const titleRef = useRef<HTMLInputElement>(null),
+        estateRef = useRef<{ value: string }>({
+            value: estate?.id ?? "none",
+        }),
         priceRef = useRef<HTMLInputElement>(null),
         unitRef = useRef<HTMLInputElement>(null),
         descRef = useRef<HTMLTextAreaElement>(null);
 
     const submit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
+        const estate = estates.find(
+            (item) => item?.id == estateRef.current?.value,
+        );
+        if (!estate) return;
+
         const payload: AppartEntity = {
             title: titleRef.current.value,
             price: +(priceRef.current.value || 0),
@@ -26,6 +46,11 @@ const NewAppart = ({ closeModal }: { closeModal: () => any }) => {
                 id: auth?.currentUser?.uid,
                 email: auth.currentUser.email,
             },
+            estate: {
+                id: estate.id,
+                ...estate.data(),
+            },
+            estate_ref: doc(db, "estates/" + estate.id) as any,
             occupant: null,
             occupant_ref: null,
             history: [],
@@ -36,7 +61,8 @@ const NewAppart = ({ closeModal }: { closeModal: () => any }) => {
             deleted_at: null,
         };
         setLoading(true);
-        addDoc(collection(db, "apparts"), payload)
+
+        addDoc(appartCollection, payload)
             .then(() => {
                 closeModal();
             })
@@ -53,6 +79,32 @@ const NewAppart = ({ closeModal }: { closeModal: () => any }) => {
                 onSubmit={submit}
                 className="flex flex-col gap-4 mt-6 mx-auto"
             >
+                <Select
+                    showSearch
+                    placeholder="Choisir propriété ..."
+                    onChange={(value) => {
+                        estateRef.current.value = value;
+                    }}
+                    filterOption={(input, option) =>
+                        (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                    }
+                    defaultValue={estate?.id ?? "none"}
+                    options={[
+                        {
+                            label: "Choisir Propriété ...",
+                            value: "none",
+                        },
+                        ...estates.map((item) => ({
+                            value: item.id,
+                            label: item.data().title,
+                        })),
+                    ]}
+                    size="large"
+                    className=""
+                />
+
                 <div className="flex flex-col gap-2">
                     <label htmlFor="new-appart-name" className="w-48">
                         Designation

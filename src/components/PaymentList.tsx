@@ -13,24 +13,43 @@ const PaymentList = () => {
                 columns={[
                     {
                         title: "Libellé",
-                        render: (_, record) => record.data().label,
+                        render: (_, record) => (
+                            <span className="whitespace-nowrap">
+                                {record.data().label}
+                            </span>
+                        ),
                     },
                     {
                         title: "Occupants",
-                        render: (_, record) => record.data().occupant?.nom,
+                        render: (_, record) => (
+                            <span className="whitespace-nowrap">
+                                {record.data().occupant?.nom}
+                            </span>
+                        ),
                     },
                     {
                         title: "Date",
-                        render: (_, record) =>
-                            new Date(record.data().date).toDateString(),
+                        render: (_, record) => (
+                            <span className="whitespace-nowrap">
+                                {new Date(record.data().date).toDateString()}
+                            </span>
+                        ),
                     },
                     {
                         title: "Montant",
-                        render: (_, record) => record.data().amount,
+                        render: (_, record) => (
+                            <span className="whitespace-nowrap">
+                                {record.data().amount}
+                            </span>
+                        ),
                     },
                     {
                         title: "Appartement",
-                        render: (_, record) => record.data().appart?.title,
+                        render: (_, record) => (
+                            <span className="whitespace-nowrap">
+                                {record.data().appart?.title}
+                            </span>
+                        ),
                     },
                     {
                         title: "Actions",

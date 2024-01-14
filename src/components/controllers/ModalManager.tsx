@@ -1,5 +1,6 @@
 import { useModalContext } from "@/contexts/modal.context";
 import React from "react";
+import NewEstate from "../modal/NewEstate";
 
 const NewAppart = React.lazy(() => import("../modal/NewAppart"));
 const NewPayment = React.lazy(() => import("../modal/NewPayment"));
@@ -15,7 +16,9 @@ const ModalManager = () => {
 
     switch (modals.modalId) {
         case "CREATE_APPART":
-            return <NewAppart closeModal={closeModal} />;
+            return (
+                <NewAppart closeModal={closeModal} payload={modals.payload} />
+            );
 
         case "SAVE_PAYMENT":
             return (
@@ -61,6 +64,9 @@ const ModalManager = () => {
                     payload={modals.payload}
                 />
             );
+
+        case "CREATE_ESTATE":
+            return <NewEstate closeModal={closeModal} />;
 
         default:
             null;

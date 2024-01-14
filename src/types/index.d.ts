@@ -25,6 +25,17 @@ export type DefaultEntity = {
     id?: string;
 };
 
+export type EstateEntity = {
+    title: string;
+    address: string;
+    description: string;
+    owner: DefaultEntity & { email: string };
+    owner_ref: DocumentReference<{ email: string }>;
+    created_at: Timestamp;
+    updated_at: Timestamp;
+    deleted_at: Timestamp;
+};
+
 export type AppartEntity = {
     title: string;
     price: number;
@@ -32,6 +43,8 @@ export type AppartEntity = {
     description: string;
     owner: DefaultEntity & { email: string };
     owner_ref: DocumentReference<{ email: string }>;
+    estate: DefaultEntity & EstateEntity;
+    estate_ref?: DocumentReference<EstateEntity, EstateEntity>;
     occupant: DefaultEntity & OccupantEntity;
     occupant_ref?: DocumentReference<OccupantEntity, OccupantEntity>;
     history: (DefaultEntity & OccupantEntity & Record<"from" | "to", string>)[];
@@ -83,7 +96,8 @@ export type DimensionContextType = {
 };
 
 export type ModalData =
-    | { modalId: "CREATE_APPART"; payload?: any }
+    | { modalId: "CREATE_APPART"; payload: { estateId?: string } }
+    | { modalId: "CREATE_ESTATE"; payload?: any }
     | { modalId: "ADD_OCCUPANT"; payload?: any }
     | { modalId: "EDIT_APPART"; payload: { appartId: string } }
     | { modalId: "DELETE_APPART"; payload: { appartId: string } }
@@ -101,6 +115,13 @@ export type ModalContextType = {
     modals?: ModalData & { thread: ModalData[] };
     closeModal?: (modalId?: ModalData["modalId"]) => any;
     openModal?: (data: ModalData) => any;
+};
+
+export type EstateContextType = {
+    estates?: QueryDocumentSnapshot<EstateEntity, EstateEntity>[];
+    filter?: object;
+    setFilter?: React.Dispatch<React.SetStateAction<object>>;
+    estateCollection?: CollectionReference<EstateEntity, EstateEntity>;
 };
 
 export type AppartContextType = {

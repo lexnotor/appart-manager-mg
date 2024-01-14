@@ -62,7 +62,7 @@
         }
 
         :focus:is(input, textarea, select, .custom-input) {
-            @apply border-primary-dark
+            @apply border-primary-dark outline-none;
         }
 
         .checkbox {

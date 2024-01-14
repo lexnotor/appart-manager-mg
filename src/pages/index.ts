@@ -1,9 +1,10 @@
 export { default as AppartsPage } from "./apparts";
-export { default as OccupantsPage } from "./occupants";
 export { default as ErrorPage } from "./error";
+export { default as EstatePage } from "./estates";
 export { default as HomePage } from "./home";
 export { default as LoginPage } from "./login";
-export { default as SignupPage } from "./signup";
+export { default as OccupantsPage } from "./occupants";
 export { default as PaiementPage } from "./paiement";
 export { default as ResetPswPAge } from "./resetPsw";
 export { default as SettingsPage } from "./settings";
+export { default as SignupPage } from "./signup";

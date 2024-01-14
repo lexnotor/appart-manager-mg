@@ -35,7 +35,7 @@ const AppartContextProvider = ({ children }: { children: ReactNode }) => {
             fromFirestore: (
                 snapshot: QueryDocumentSnapshot<AppartEntity, AppartEntity>,
             ) => {
-                return snapshot.data() as AppartEntity;
+                return snapshot.data();
             },
         }),
         [],

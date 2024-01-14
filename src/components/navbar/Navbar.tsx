@@ -33,7 +33,7 @@ const Navbar = () => {
                 <ul
                     className={`${
                         isOpen ? "left-0 " : "left-[-100vw]"
-                    } flex gap-4 max-sm:flex-col duration-500 max-sm:pl-5  max-sm:pt-5 max-sm:text-lg  max-sm:absolute top-[4.4rem] max-sm:w-[90vw] max-sm:h-[calc(100vh-4.4rem)] max-sm:bg-neutral-100 max-sm:dark:bg-neutral-800`}
+                    } flex gap-4 max-sm:flex-col duration-500 max-sm:pl-5  max-sm:pt-5 max-sm:text-lg  max-sm:absolute top-[3.4rem] max-sm:w-[90vw] max-sm:h-[calc(100vh-4.4rem)] max-sm:bg-neutral-100 max-sm:dark:bg-neutral-800`}
                 >
                     <li>
                         <NavLink
