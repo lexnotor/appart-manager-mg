@@ -111,10 +111,27 @@ export type ModalData =
           modalId: "SAVE_PAYMENT";
           payload: { appartId: string };
       };
+export type DrawerData =
+    | {
+          drawerId: "APPART_DETAILS";
+          payload: { appartId: string };
+      }
+    | {
+          drawerId: "ESTATE_DETAILS";
+          payload: { estateId: string };
+      }
+    | {
+          drawerId: "SOLVE_TS";
+          payload: any;
+      };
 export type ModalContextType = {
     modals?: ModalData & { thread: ModalData[] };
     closeModal?: (modalId?: ModalData["modalId"]) => any;
     openModal?: (data: ModalData) => any;
+
+    drawers?: DrawerData & { thread: DrawerData[] };
+    closeDrawer?: (drawerId?: DrawerData["drawerId"]) => any;
+    openDrawer?: (data: DrawerData) => any;
 };
 
 export type EstateContextType = {

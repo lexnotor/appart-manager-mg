@@ -1,29 +1,27 @@
-import AntConfig from "@/components/AntConfig";
-import AppartDetails from "@/components/AppartDetails";
 import AppartList from "@/components/AppartList";
 import { useAppartContext } from "@/contexts/appart.context";
-import { useDimensionContext } from "@/contexts/dimension.context";
 import { useEstateContext } from "@/contexts/estate.context";
 import { useModalContext } from "@/contexts/modal.context";
-import { Drawer } from "antd";
-import { useCallback } from "react";
+import { useMemo } from "react";
 import { IoMdAdd } from "react-icons/io";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const AppartsPage = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
     const { apparts } = useAppartContext();
     const { estates } = useEstateContext();
     const params = useParams();
     const estate = estates.find((item) => item.id == params.id);
 
-    const closeDetails = useCallback(() => {
-        const query = new URLSearchParams(searchParams);
-        query.delete("appart");
-        setSearchParams(query);
-    }, [searchParams, setSearchParams]);
+    const filteredApparts = useMemo(
+        () =>
+            params.id
+                ? apparts.filter(
+                      (item) => item.data()?.estate?.id == params?.id,
+                  )
+                : apparts,
+        [apparts, params.id],
+    );
 
-    const { screenX } = useDimensionContext();
     const { openModal } = useModalContext();
 
     return (
@@ -62,20 +60,7 @@ const AppartsPage = () => {
                 </div>
             </header>
 
-            <AppartList apparts={apparts} />
-
-            <AntConfig>
-                <Drawer
-                    destroyOnClose
-                    onClose={closeDetails}
-                    open={!!searchParams?.get("appart")}
-                    closable={false}
-                    footer={false}
-                    width={screenX <= 720 ? "90vw" : "720px"}
-                >
-                    <AppartDetails close={closeDetails} />
-                </Drawer>
-            </AntConfig>
+            <AppartList apparts={filteredApparts} />
         </div>
     );
 };

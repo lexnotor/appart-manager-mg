@@ -1,20 +1,19 @@
 import living_room from "@/assets/living_room.jpg";
+import { useModalContext } from "@/contexts/modal.context";
 import { AppartEntity } from "@/types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { LuBadgeCheck } from "react-icons/lu";
-import { useSearchParams } from "react-router-dom";
 
 const AppartCard = ({
     data,
 }: {
     data: QueryDocumentSnapshot<AppartEntity>;
 }) => {
-    const [, setSearchParams] = useSearchParams();
+    const { openDrawer } = useModalContext();
     const showDetail = () =>
-        setSearchParams((old) => {
-            const query = new URLSearchParams(old);
-            query.set("appart", data.id);
-            return query;
+        openDrawer({
+            drawerId: "APPART_DETAILS",
+            payload: { appartId: data.id },
         });
 
     return (

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import AntConfig from "../AntConfig";
 import ModalManager from "./ModalManager";
+import DrawerManager from "./DrawerManager";
 
 const Managers = () => {
     return (
@@ -12,6 +13,7 @@ const Managers = () => {
                     </div>
                 }
             >
+                <DrawerManager />
                 <ModalManager />
             </Suspense>
         </AntConfig>

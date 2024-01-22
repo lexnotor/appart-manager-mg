@@ -1,21 +1,23 @@
-import { LuBadgeCheck } from "react-icons/lu";
 import living_room from "@/assets/living_room.jpg";
-import { Divider } from "antd";
-import { CustomTable } from "./CustomTable";
-import { useSearchParams } from "react-router-dom";
 import { useAppartContext } from "@/contexts/appart.context";
 import { useModalContext } from "@/contexts/modal.context";
-import { Timestamp, updateDoc } from "firebase/firestore";
 import { AppartEntity } from "@/types";
+import { Divider } from "antd";
+import { Timestamp, updateDoc } from "firebase/firestore";
 import { useEffect } from "react";
+import { LuBadgeCheck } from "react-icons/lu";
+import { CustomTable } from "../CustomTable";
 
-const AppartDetails = ({ close }: { close: () => any }) => {
+const AppartDetails = ({
+    close,
+    payload,
+}: {
+    close: () => any;
+    payload: { appartId: string };
+}) => {
     const { apparts } = useAppartContext();
     const { openModal } = useModalContext();
-    const [searchParams] = useSearchParams();
-    const current = apparts?.find(
-        (snap) => snap?.id == searchParams.get("appart"),
-    );
+    const current = apparts?.find((snap) => snap?.id == payload?.appartId);
 
     useEffect(() => {
         if (current && current.data()) return;
@@ -53,6 +55,7 @@ const AppartDetails = ({ close }: { close: () => any }) => {
                     alt="photo_1"
                     className="shrink-0 w-full rounded-md mx-auto"
                 />
+                <p>Appartement</p>
                 <header className="flex gap-x-8">
                     <h3 className="font-bold text-2xl">{data?.title}</h3>
 

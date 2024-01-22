@@ -1,15 +1,25 @@
 import living_room from "@/assets/living_room.jpg";
 import { useAppartContext } from "@/contexts/appart.context";
+import { useModalContext } from "@/contexts/modal.context";
 import { EstateEntity } from "@/types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { FaLocationDot } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+
 const EstateCard = ({
     data,
 }: {
     data: QueryDocumentSnapshot<EstateEntity, EstateEntity>;
 }) => {
     const { apparts } = useAppartContext();
+    const { openDrawer } = useModalContext();
+
+    const showDetails = () => {
+        openDrawer({
+            drawerId: "ESTATE_DETAILS",
+            payload: { estateId: data.id },
+        });
+    };
 
     return (
         <article className="p-2 border border-neutral-700 rounded-md max-w-[30rem] flex flex-col gap-2">
@@ -52,7 +62,10 @@ const EstateCard = ({
                         }
                         )
                     </Link>
-                    <button className="whitespace-nowrap px-2 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500">
+                    <button
+                        onClick={showDetails}
+                        className="whitespace-nowrap px-2 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"
+                    >
                         Voir plus
                     </button>
                 </footer>
