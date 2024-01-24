@@ -44,15 +44,31 @@ const OccupantList = ({
                     },
                     {
                         title: "Status",
-                        render: (_, record) =>
-                            apparts.find(
+                        render: (_, record) => {
+                            const appart = apparts.find(
                                 (item) =>
                                     item?.data().occupant_ref?.id == record.id,
-                            ) ? (
-                                <Tag color="cyan">Occuper</Tag>
-                            ) : (
-                                "-"
-                            ),
+                            );
+                            if (!appart) return <>-</>;
+
+                            const lastPayement = appart.data().payments.at(-1);
+                            const lastPayementDate = new Date(
+                                lastPayement?.date?.year,
+                                lastPayement?.date?.month,
+                                lastPayement?.date?.day,
+                            );
+                            return (
+                                <div>
+                                    <Tag color="cyan">Occuper</Tag>
+
+                                    {(!lastPayement ||
+                                        lastPayementDate.getTime() <
+                                            Date.now()) && (
+                                        <Tag color="red">Retard</Tag>
+                                    )}
+                                </div>
+                            );
+                        },
                     },
                     {
                         title: "Actions",

@@ -1,13 +1,13 @@
-import { Drawer } from "antd";
-import AntConfig from "../AntConfig";
-import { useModalContext } from "@/contexts/modal.context";
-import AppartDetails from "../drawer/AppartDetails";
-import React, { useCallback, useMemo } from "react";
 import { useDimensionContext } from "@/contexts/dimension.context";
+import { useDrawerContext } from "@/contexts/drawer.context";
+import { Drawer } from "antd";
+import React, { useCallback, useMemo } from "react";
+import AntConfig from "../AntConfig";
+import AppartDetails from "../drawer/AppartDetails";
 import EstateDetails from "../drawer/EstateDetails";
 
 const DrawerManager = () => {
-    const { closeDrawer, drawers } = useModalContext();
+    const { closeDrawer, drawers } = useDrawerContext();
     const { screenX } = useDimensionContext();
     const close = useCallback(() => {
         closeDrawer();

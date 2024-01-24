@@ -1,6 +1,6 @@
 import living_room from "@/assets/living_room.jpg";
 import { useAppartContext } from "@/contexts/appart.context";
-import { useModalContext } from "@/contexts/modal.context";
+import { useDrawerContext } from "@/contexts/drawer.context";
 import { EstateEntity } from "@/types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { FaLocationDot } from "react-icons/fa6";
@@ -12,7 +12,7 @@ const EstateCard = ({
     data: QueryDocumentSnapshot<EstateEntity, EstateEntity>;
 }) => {
     const { apparts } = useAppartContext();
-    const { openDrawer } = useModalContext();
+    const { openDrawer } = useDrawerContext();
 
     const showDetails = () => {
         openDrawer({

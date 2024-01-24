@@ -1,5 +1,6 @@
 import { AppartContextProvider } from "@/contexts/appart.context";
 import { DimensionContextProvider } from "@/contexts/dimension.context";
+import { DrawerContextProvider } from "@/contexts/drawer.context";
 import { EstateContextProvider } from "@/contexts/estate.context";
 import { FirebaseContextProvider } from "@/contexts/firebase.context";
 import { ModalContextProvider } from "@/contexts/modal.context";
@@ -12,15 +13,17 @@ const GlobalContextLayer = ({ children }: { children: ReactNode }) => {
         <FirebaseContextProvider>
             <DimensionContextProvider>
                 <ModalContextProvider>
-                    <EstateContextProvider>
-                        <AppartContextProvider>
-                            <OccupantContextProvider>
-                                <PaymentContextProvider>
-                                    {children}
-                                </PaymentContextProvider>
-                            </OccupantContextProvider>
-                        </AppartContextProvider>
-                    </EstateContextProvider>
+                    <DrawerContextProvider>
+                        <EstateContextProvider>
+                            <AppartContextProvider>
+                                <OccupantContextProvider>
+                                    <PaymentContextProvider>
+                                        {children}
+                                    </PaymentContextProvider>
+                                </OccupantContextProvider>
+                            </AppartContextProvider>
+                        </EstateContextProvider>
+                    </DrawerContextProvider>
                 </ModalContextProvider>
             </DimensionContextProvider>
         </FirebaseContextProvider>

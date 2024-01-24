@@ -62,7 +62,7 @@ export type PaymentEntity = {
     occupant_ref?: DocumentReference<OccupantEntity>;
     label: string;
     amount: string;
-    date: string;
+    date: { year: number; month: number; day?: number };
     created_at: Timestamp;
     updated_at: Timestamp;
     deleted_at: Timestamp;
@@ -111,6 +111,13 @@ export type ModalData =
           modalId: "SAVE_PAYMENT";
           payload: { appartId: string };
       };
+
+export type ModalContextType = {
+    modals?: ModalData & { thread: ModalData[] };
+    closeModal?: (modalId?: ModalData["modalId"]) => any;
+    openModal?: (data: ModalData) => any;
+};
+
 export type DrawerData =
     | {
           drawerId: "APPART_DETAILS";
@@ -124,11 +131,7 @@ export type DrawerData =
           drawerId: "SOLVE_TS";
           payload: any;
       };
-export type ModalContextType = {
-    modals?: ModalData & { thread: ModalData[] };
-    closeModal?: (modalId?: ModalData["modalId"]) => any;
-    openModal?: (data: ModalData) => any;
-
+export type DrawerContextType = {
     drawers?: DrawerData & { thread: DrawerData[] };
     closeDrawer?: (drawerId?: DrawerData["drawerId"]) => any;
     openDrawer?: (data: DrawerData) => any;

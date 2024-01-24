@@ -1,6 +1,7 @@
 import { useDimensionContext } from "@/contexts/dimension.context";
 import { ConfigProvider, theme } from "antd";
 import { ReactNode } from "react";
+import frFr from "antd/locale/fr_FR";
 
 const AntConfig = ({ children }: { children: ReactNode }) => {
     const { darkAlgorithm, defaultAlgorithm } = theme;
@@ -9,6 +10,7 @@ const AntConfig = ({ children }: { children: ReactNode }) => {
 
     return (
         <ConfigProvider
+            locale={frFr}
             theme={{
                 components: {
                     Drawer: {
@@ -24,6 +26,13 @@ const AntConfig = ({ children }: { children: ReactNode }) => {
                         zIndexPopupBase: 50,
                     },
                     Select: {
+                        colorBgContainer: "transparent",
+                        colorPrimary: "#2fdde0",
+                        colorPrimaryActive: "#2fdde0",
+                        colorPrimaryHover: "#404040",
+                        fontSizeLG: 14,
+                    },
+                    DatePicker: {
                         colorBgContainer: "transparent",
                         colorPrimary: "#2fdde0",
                         colorPrimaryActive: "#2fdde0",

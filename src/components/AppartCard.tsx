@@ -1,5 +1,5 @@
 import living_room from "@/assets/living_room.jpg";
-import { useModalContext } from "@/contexts/modal.context";
+import { useDrawerContext } from "@/contexts/drawer.context";
 import { AppartEntity } from "@/types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { LuBadgeCheck } from "react-icons/lu";
@@ -9,7 +9,7 @@ const AppartCard = ({
 }: {
     data: QueryDocumentSnapshot<AppartEntity>;
 }) => {
-    const { openDrawer } = useModalContext();
+    const { openDrawer } = useDrawerContext();
     const showDetail = () =>
         openDrawer({
             drawerId: "APPART_DETAILS",

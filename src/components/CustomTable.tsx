@@ -49,6 +49,7 @@ export function CustomTable<T extends AnyObject>({ ...arg }: Cust<T>) {
                     ),
                 },
             }}
+            rowKey={(record) => record?.id}
         />
     );
 }

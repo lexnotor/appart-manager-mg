@@ -1,7 +1,7 @@
 import useAuth from "@/hooks/useAuth";
-import { NavLink } from "react-router-dom";
-import { IoMenu } from "react-icons/io5";
 import { useEffect, useState } from "react";
+import { IoMenu } from "react-icons/io5";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
     const { logout } = useAuth();
@@ -80,6 +80,7 @@ const Navbar = () => {
                             Occupants
                         </NavLink>
                     </li>
+
                     <li className="sm:hidden">
                         <button
                             className="block px-4 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"

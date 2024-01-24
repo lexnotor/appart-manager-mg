@@ -2,7 +2,7 @@ import { useAppartContext } from "@/contexts/appart.context";
 import { useFirebaseContext } from "@/contexts/firebase.context";
 import { usePaymentContext } from "@/contexts/payment.context";
 import { PaymentEntity } from "@/types";
-import { Modal } from "antd";
+import { DatePicker, Modal } from "antd";
 import {
     Timestamp,
     addDoc,
@@ -28,6 +28,7 @@ const NewPayment = ({
     );
     const amountRef = useRef<HTMLInputElement>(null),
         unitRef = useRef<HTMLInputElement>(null),
+        dateRef = useRef<PaymentEntity["date"]>(null),
         labelRef = useRef<HTMLInputElement>(null);
 
     const submit: React.FormEventHandler<HTMLFormElement> = (e) => {
@@ -50,12 +51,14 @@ const NewPayment = ({
                     appart?.data()?.occupant?.id,
             },
             occupant_ref: appart?.data().occupant_ref,
-            date: new Date().toISOString(),
+            date: dateRef.current,
             label: labelRef.current.value,
             updated_at: Timestamp.now(),
             created_at: Timestamp.now(),
             deleted_at: null,
         };
+
+        if (payload.date == null) return alert("Veuillez choisir un mois");
 
         setLoading(true);
         addDoc(paymentCollection, payload)
@@ -147,6 +150,25 @@ const NewPayment = ({
                         defaultValue={`${
                             appart ? appart?.data().occupant?.nom : ""
                         }`}
+                    />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                    <label htmlFor="new-appart-label" className="w-48">
+                        Mois
+                    </label>
+                    <DatePicker
+                        picker="month"
+                        onChange={(value) =>
+                            (dateRef.current = value
+                                ? {
+                                      month: value.month(),
+                                      year: value.year(),
+                                      day: value.daysInMonth(),
+                                  }
+                                : null)
+                        }
+                        size="large"
                     />
                 </div>
 

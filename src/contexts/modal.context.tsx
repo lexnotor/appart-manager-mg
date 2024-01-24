@@ -1,4 +1,4 @@
-import { DrawerData, ModalContextType, ModalData } from "@/types";
+import { ModalContextType, ModalData } from "@/types";
 import {
     ReactNode,
     createContext,
@@ -12,12 +12,6 @@ const modalContext = createContext<ModalContextType>({});
 const ModalContextProvider = ({ children }: { children: ReactNode }) => {
     const [modals, setModals] = useState<ModalContextType["modals"]>({
         modalId: null,
-        thread: [],
-        payload: null,
-    });
-
-    const [drawers, setDrawers] = useState<ModalContextType["drawers"]>({
-        drawerId: null,
         thread: [],
         payload: null,
     });
@@ -44,37 +38,12 @@ const ModalContextProvider = ({ children }: { children: ReactNode }) => {
         });
     }, []);
 
-    const closeDrawer = useCallback(() => {
-        setDrawers((old) => {
-            if (!old?.drawerId) return old;
-            const thread = [...old.thread];
-            const next = thread.pop();
-            return {
-                drawerId: next?.drawerId ?? null,
-                payload: next?.payload ?? null,
-                thread,
-            };
-        });
-    }, []);
-    const openDrawer = useCallback((data: DrawerData) => {
-        setDrawers((old) => {
-            return {
-                drawerId: old?.drawerId ? old?.drawerId : data.drawerId,
-                payload: old?.drawerId ? old?.payload : data.payload,
-                thread: old?.drawerId ? [...old.thread, data] : old?.thread,
-            };
-        });
-    }, []);
-
     return (
         <modalContext.Provider
             value={{
                 closeModal,
                 openModal,
                 modals,
-                closeDrawer,
-                openDrawer,
-                drawers,
             }}
         >
             {children}

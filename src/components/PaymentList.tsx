@@ -29,11 +29,18 @@ const PaymentList = () => {
                     },
                     {
                         title: "Date",
-                        render: (_, record) => (
-                            <span className="whitespace-nowrap">
-                                {new Date(record.data().date).toDateString()}
-                            </span>
-                        ),
+                        render: (_, record) => {
+                            const date = record.data().date;
+                            return (
+                                <span className="whitespace-nowrap">
+                                    {`${new Date(
+                                        date.year,
+                                        date.month,
+                                        date.day,
+                                    ).toLocaleDateString()}`}
+                                </span>
+                            );
+                        },
                     },
                     {
                         title: "Montant",
@@ -46,7 +53,13 @@ const PaymentList = () => {
                     {
                         title: "Appartement",
                         render: (_, record) => (
-                            <span className="whitespace-nowrap">
+                            <span
+                                className="whitespace-nowrap"
+                                title={`Appartement: ${record.data().appart
+                                    ?.title}\nProprieté: ${
+                                    record.data().appart.estate.title
+                                }`}
+                            >
                                 {record.data().appart?.title}
                             </span>
                         ),
