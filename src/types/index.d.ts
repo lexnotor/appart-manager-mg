@@ -104,6 +104,12 @@ export type ModalData =
     | { modalId: "DELETE_OCCUPANT"; payload: { occupantId: string } }
     | { modalId: "DELETE_PAYMENT"; payload: { paymentId: string } }
     | {
+          modalId: "OPEN_FILTER";
+          payload: {
+              filterType: "ESTATE" | "APPART" | "PAIEMENT" | "OCCUPANT";
+          };
+      }
+    | {
           modalId: "NEW_RENT";
           payload: { appartId?: string; occupantId?: string };
       }

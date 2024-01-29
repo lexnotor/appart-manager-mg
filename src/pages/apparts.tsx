@@ -4,22 +4,27 @@ import { useEstateContext } from "@/contexts/estate.context";
 import { useModalContext } from "@/contexts/modal.context";
 import { useMemo } from "react";
 import { IoMdAdd } from "react-icons/io";
-import { Link, useParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const AppartsPage = () => {
     const { apparts } = useAppartContext();
     const { estates } = useEstateContext();
-    const params = useParams();
-    const estate = estates.find((item) => item.id == params.id);
+    const [searchParams] = useSearchParams();
+    const estate = estates.find(
+        (item) => item.id == searchParams.get("estateId"),
+    );
 
     const filteredApparts = useMemo(
         () =>
-            params.id
+            searchParams.get("estateId") &&
+            searchParams.get("estateId") != "all"
                 ? apparts.filter(
-                      (item) => item.data()?.estate?.id == params?.id,
+                      (item) =>
+                          item.data()?.estate?.id ==
+                          searchParams.get("estateId"),
                   )
                 : apparts,
-        [apparts, params.id],
+        [apparts, searchParams],
     );
 
     const { openModal } = useModalContext();
@@ -46,7 +51,9 @@ const AppartsPage = () => {
                         onClick={() =>
                             openModal({
                                 modalId: "CREATE_APPART",
-                                payload: { estateId: params.id },
+                                payload: {
+                                    estateId: searchParams.get("estateId"),
+                                },
                             })
                         }
                     >

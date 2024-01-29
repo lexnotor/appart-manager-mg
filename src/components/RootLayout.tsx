@@ -3,6 +3,7 @@ import Header from "./Header";
 import useAuth from "@/hooks/useAuth";
 import { Suspense } from "react";
 import Managers from "./controllers/Managers";
+import SearchBar from "./SearchBar";
 
 const RootLayout = () => {
     const { status } = useAuth();
@@ -27,6 +28,9 @@ const RootLayout = () => {
                             </div>
                         }
                     >
+                        <div className="sm:hidden ">
+                            <SearchBar />
+                        </div>
                         <Outlet />
                     </Suspense>
                 )}

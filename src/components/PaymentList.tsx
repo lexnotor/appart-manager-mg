@@ -1,11 +1,54 @@
 import { useModalContext } from "@/contexts/modal.context";
 import { usePaymentContext } from "@/contexts/payment.context";
+import { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import AntConfig from "./AntConfig";
 import { CustomTable } from "./CustomTable";
 
 const PaymentList = () => {
+    const [searchParams] = useSearchParams();
     const { payments } = usePaymentContext();
     const { openModal } = useModalContext();
+
+    const data = useMemo(() => {
+        const occupantId = searchParams.get("occupantId");
+        const appartId = searchParams.get("appartId");
+        const minPrice = searchParams.get("minPrice");
+        const maxPrice = searchParams.get("maxPrice");
+        const fromDate = searchParams.get("fromDate");
+        const toDate = searchParams.get("toDate");
+
+        return payments
+            .filter(
+                (item) => !occupantId || item.data().occupant?.id == occupantId,
+            )
+            .filter((item) => !appartId || item.data().appart?.id == appartId)
+            .filter(
+                (item) =>
+                    !minPrice || parseInt(item.data().amount) >= +minPrice,
+            )
+            .filter(
+                (item) => !maxPrice || parseInt(item.data().amount) < +maxPrice,
+            )
+            .filter(
+                (item) =>
+                    !fromDate ||
+                    new Date(
+                        item.data().date?.year,
+                        item.data().date?.month,
+                        item.data().date?.day,
+                    ).getTime() >= +fromDate,
+            )
+            .filter(
+                (item) =>
+                    !toDate ||
+                    new Date(
+                        item.data().date?.year,
+                        item.data().date?.month,
+                        item.data().date?.day,
+                    ).getTime() <= +toDate,
+            );
+    }, [payments, searchParams]);
 
     return (
         <AntConfig>
@@ -81,7 +124,7 @@ const PaymentList = () => {
                         ),
                     },
                 ]}
-                dataSource={payments}
+                dataSource={data}
             />
         </AntConfig>
     );

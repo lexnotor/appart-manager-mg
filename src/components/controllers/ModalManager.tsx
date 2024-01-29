@@ -1,6 +1,7 @@
 import { useModalContext } from "@/contexts/modal.context";
 import React from "react";
 import NewEstate from "../modal/NewEstate";
+import Filter from "../modal/Filter";
 
 const NewAppart = React.lazy(() => import("../modal/NewAppart"));
 const NewPayment = React.lazy(() => import("../modal/NewPayment"));
@@ -67,6 +68,9 @@ const ModalManager = () => {
 
         case "CREATE_ESTATE":
             return <NewEstate closeModal={closeModal} />;
+
+        case "OPEN_FILTER":
+            return <Filter closeModal={closeModal} payload={modals.payload} />;
 
         default:
             null;

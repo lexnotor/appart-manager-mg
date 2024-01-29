@@ -2,6 +2,7 @@ import useAuth from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
+import SearchBar from "../SearchBar";
 
 const Navbar = () => {
     const { logout } = useAuth();
@@ -19,7 +20,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <div className="flex justify-between gap-4">
+        <div className="flex items-center justify-between gap-4">
             <div>MarvelGroup</div>
 
             <nav className="">
@@ -94,8 +95,12 @@ const Navbar = () => {
                     </li>
                 </ul>
             </nav>
-            <div className="max-sm:hidden">
-                <button onClick={() => logout()}>Deconnexion</button>
+
+            <div className="max-sm:hidden flex gap-3">
+                <SearchBar />
+                <button onClick={() => logout()} className="block">
+                    Deconnexion
+                </button>
             </div>
         </div>
     );

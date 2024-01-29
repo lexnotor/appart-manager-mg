@@ -3,8 +3,9 @@ import { useAppartContext } from "@/contexts/appart.context";
 import { useDrawerContext } from "@/contexts/drawer.context";
 import { EstateEntity } from "@/types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
+import { useCallback } from "react";
 import { FaLocationDot } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const EstateCard = ({
     data,
@@ -13,6 +14,7 @@ const EstateCard = ({
 }) => {
     const { apparts } = useAppartContext();
     const { openDrawer } = useDrawerContext();
+    const [searchParams] = useSearchParams();
 
     const showDetails = () => {
         openDrawer({
@@ -20,6 +22,15 @@ const EstateCard = ({
             payload: { estateId: data.id },
         });
     };
+
+    const buildPath = useCallback(
+        (estateId: string) => {
+            const query = new URLSearchParams(searchParams);
+            query.set("estateId", estateId);
+            return `/apparts?${query.toString()}`;
+        },
+        [searchParams],
+    );
 
     return (
         <article className="p-2 border border-neutral-700 rounded-md max-w-[30rem] flex flex-col gap-2">
@@ -51,7 +62,7 @@ const EstateCard = ({
 
                 <footer className="flex w-full justify-end gap-2 text-[85%] max-sm:items-center">
                     <Link
-                        to={`${data.id}`}
+                        to={buildPath(data.id)}
                         className="whitespace-nowrap px-2 py-1 border rounded-md hover:border-primary-dark hover:bg-primary-dark duration-500"
                     >
                         Appartements (

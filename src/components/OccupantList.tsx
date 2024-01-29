@@ -1,10 +1,12 @@
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import AntConfig from "./AntConfig";
 import { CustomTable } from "./CustomTable";
-import { OccupantEntity } from "@/types";
+import { AppartEntity, OccupantEntity } from "@/types";
 import { useAppartContext } from "@/contexts/appart.context";
 import { Tag } from "antd";
 import { useModalContext } from "@/contexts/modal.context";
+import { useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const OccupantList = ({
     occupants,
@@ -13,6 +15,45 @@ const OccupantList = ({
 }) => {
     const { apparts } = useAppartContext();
     const { openModal } = useModalContext();
+    const [searchParams] = useSearchParams();
+
+    const isDelay = useCallback(
+        (appart: QueryDocumentSnapshot<AppartEntity, AppartEntity>) => {
+            const lastPayement = appart.data().payments.at(-1);
+            const lastPayementDate = new Date(
+                lastPayement?.date?.year,
+                lastPayement?.date?.month,
+                lastPayement?.date?.day,
+            );
+            return !lastPayement || lastPayementDate.getTime() < Date.now();
+        },
+        [],
+    );
+
+    const data = useMemo(() => {
+        const hasdelay = searchParams.get("isdelay");
+        const noDelay = searchParams.get("noDelay");
+
+        return occupants
+            .filter((occupant) => {
+                if (!hasdelay) return true;
+
+                const currentAppart = apparts.find(
+                    (appart) => appart?.data().occupant_ref?.id == occupant.id,
+                );
+                // bloc les retardataire
+                return !(currentAppart && !isDelay(currentAppart));
+            })
+            .filter((occupant) => {
+                if (!noDelay) return true;
+
+                const currentAppart = apparts.find(
+                    (appart) => appart?.data().occupant_ref?.id == occupant.id,
+                );
+                // bloc ceux qui sont en ordre
+                return !(!currentAppart || !isDelay(currentAppart));
+            });
+    }, [occupants, searchParams, apparts, isDelay]);
 
     return (
         <AntConfig>
@@ -51,19 +92,11 @@ const OccupantList = ({
                             );
                             if (!appart) return <>-</>;
 
-                            const lastPayement = appart.data().payments.at(-1);
-                            const lastPayementDate = new Date(
-                                lastPayement?.date?.year,
-                                lastPayement?.date?.month,
-                                lastPayement?.date?.day,
-                            );
                             return (
                                 <div>
                                     <Tag color="cyan">Occuper</Tag>
 
-                                    {(!lastPayement ||
-                                        lastPayementDate.getTime() <
-                                            Date.now()) && (
+                                    {isDelay(appart) && (
                                         <Tag color="red">Retard</Tag>
                                     )}
                                 </div>
@@ -87,7 +120,7 @@ const OccupantList = ({
                         ),
                     },
                 ]}
-                dataSource={occupants}
+                dataSource={data}
             />
         </AntConfig>
     );

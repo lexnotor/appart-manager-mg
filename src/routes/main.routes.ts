@@ -14,16 +14,11 @@ const mainRoutes = createBrowserRouter([
             },
             {
                 path: "apparts",
-                children: [
-                    {
-                        index: true,
-                        Component: React.lazy(() => import("@/pages/estates")),
-                    },
-                    {
-                        path: ":id",
-                        Component: React.lazy(() => import("@/pages/apparts")),
-                    },
-                ],
+                Component: React.lazy(() => import("@/pages/apparts")),
+            },
+            {
+                path: "estates",
+                Component: React.lazy(() => import("@/pages/estates")),
             },
             {
                 path: "payment",
