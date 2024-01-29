@@ -158,14 +158,14 @@ export type AppartContextType = {
 };
 
 export type OccupantContextType = {
-    occupants?: QueryDocumentSnapshot<OccupantEntity>[];
+    occupants?: QueryDocumentSnapshot<OccupantEntity, OccupantEntity>[];
     filter?: object;
     setFilter?: React.Dispatch<React.SetStateAction<object>>;
     occupantCollection?: CollectionReference<OccupantEntity, OccupantEntity>;
 };
 
 export type PaymentContextType = {
-    payments?: QueryDocumentSnapshot<PaymentEntity>[];
+    payments?: QueryDocumentSnapshot<PaymentEntity, PaymentEntity>[];
     filter?: object;
     setFilter?: React.Dispatch<React.SetStateAction<object>>;
     paymentCollection?: CollectionReference<PaymentEntity, PaymentEntity>;

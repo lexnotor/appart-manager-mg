@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import AntConfig from "./AntConfig";
 import { CustomTable } from "./CustomTable";
+import generatePdf from "@/functions/generatePayList";
+import { FiPrinter } from "react-icons/fi";
 
 const PaymentList = () => {
     const [searchParams] = useSearchParams();
@@ -126,6 +128,27 @@ const PaymentList = () => {
                 ]}
                 dataSource={data}
             />
+
+            <div className="">
+                <button
+                    className="bg-primary-dark h-[3rem] shadow-md aspect-square fixed bottom-[5vh] right-[1vw] my-auto rounded-full flex justify-center items-center text-2xl"
+                    title="Imprimer la liste"
+                    onClick={() =>
+                        generatePdf(data, {
+                            column: [
+                                "label",
+                                "amount",
+                                "occupant",
+                                "appart",
+                                "date",
+                                "created_at",
+                            ],
+                        })
+                    }
+                >
+                    <FiPrinter />
+                </button>
+            </div>
         </AntConfig>
     );
 };

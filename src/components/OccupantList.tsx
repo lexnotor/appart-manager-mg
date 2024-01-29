@@ -1,17 +1,19 @@
+import { useAppartContext } from "@/contexts/appart.context";
+import { useModalContext } from "@/contexts/modal.context";
+import generatePdf from "@/functions/generateOccupantList";
+import { AppartEntity, OccupantEntity } from "@/types";
+import { Tag } from "antd";
 import { QueryDocumentSnapshot } from "firebase/firestore";
+import { useCallback, useMemo } from "react";
+import { FiPrinter } from "react-icons/fi";
+import { useSearchParams } from "react-router-dom";
 import AntConfig from "./AntConfig";
 import { CustomTable } from "./CustomTable";
-import { AppartEntity, OccupantEntity } from "@/types";
-import { useAppartContext } from "@/contexts/appart.context";
-import { Tag } from "antd";
-import { useModalContext } from "@/contexts/modal.context";
-import { useCallback, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
 
 const OccupantList = ({
     occupants,
 }: {
-    occupants: QueryDocumentSnapshot<OccupantEntity>[];
+    occupants: QueryDocumentSnapshot<OccupantEntity, OccupantEntity>[];
 }) => {
     const { apparts } = useAppartContext();
     const { openModal } = useModalContext();
@@ -122,6 +124,19 @@ const OccupantList = ({
                 ]}
                 dataSource={data}
             />
+            <div className="">
+                <button
+                    className="bg-primary-dark h-[3rem] shadow-md aspect-square fixed bottom-[5vh] right-[1vw] my-auto rounded-full flex justify-center items-center text-2xl"
+                    title="Imprimer la liste"
+                    onClick={() =>
+                        generatePdf(data, {
+                            column: ["nom", "phone", "created_at", "email"],
+                        })
+                    }
+                >
+                    <FiPrinter />
+                </button>
+            </div>
         </AntConfig>
     );
 };
